@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mercado.Produto.Application\Mercado.Produto.Application.csproj" />
+    <ProjectReference Include="..\Mercado.Produto.Infrastructure\Mercado.Produto.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

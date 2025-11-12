@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Mercado.Produto.Application/Mercado.Produto.Application.csproj" />
+  <Project Path="Mercado.Produto.Cli/Mercado.Produto.Cli.csproj" />
+  <Project Path="Mercado.Produto.Domain/Mercado.Produto.Domain.csproj" />
+  <Project Path="Mercado.Produto.Infrastructure/Mercado.Produto.Infrastructure.csproj" />
+  <Project Path="Mercado.Produto.Tests/Mercado.Produto.Tests.csproj" />
+</Solution>

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace Mercado.Produto.Domain;
 
-// PORQUÊ: Garante a integridade dos tipos (Artefato 5).
-// Evita "strings mágicas" no código.
 public enum CategoriaProduto
 {
     Laticinios,

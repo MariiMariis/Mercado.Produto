@@ -1,27 +1,18 @@
 ﻿using Mercado.Produto.Domain.Exceptions;
 using System.Globalization;
-//
-// --- A CORREÇÃO CRÍTICA (PASSO 1) ---
-//
-// PORQUÊ: Esta é a 'chave' (o 'using') que faltava.
-// Ela diz ao compilador onde encontrar a ferramenta [JsonConstructor].
-//
 using System.Text.Json.Serialization;
 
 namespace Mercado.Produto.Domain;
 
-/// <summary>
-/// Representa a entidade Produto.
-/// É o "cofre" que guarda as regras de negócio.
-/// </summary>
+/// Representa a entidade Produto, guardando as regras de negócio
 public class Produto
 {
-    // PORQUÊ: Constantes para evitar "Valores Mágicos" (Artefato 5)
+    //Constantes para evitar "Valores Mágicos"
     private const int TAMANHO_MINIMO_NOME = 3;
     private const int TAMANHO_MAXIMO_NOME = 100;
 
-    // PORQUÊ: Propriedades com 'private set' (Imutabilidade Parcial).
-    // Só podem ser alteradas por métodos DENTRO desta classe.
+    //Propriedades com 'private set' (Imutabilidade Parcial).
+    //Só podem ser alteradas por métodos dentro desta classe.
     public Guid Id { get; private set; }
     public string Sku { get; private set; }
     public string Nome { get; private set; }
@@ -30,8 +21,8 @@ public class Produto
     public DateOnly? DataValidade { get; private set; }
     public int EstoqueAtual { get; private set; }
 
-    // PORQUÊ: Um construtor privado para forçar o uso
-    // do método de fábrica 'Create' e garantir a inicialização correta.
+    //Um construtor privado para forçar o uso
+    //do método de fábrica 'Create' e garantir a inicialização correta
     private Produto()
     {
         // Garante que strings nunca sejam nulas
@@ -39,17 +30,13 @@ public class Produto
         Nome = string.Empty;
     }
 
-    //
-    // --- A "PORTA DE SERVIÇO" (CORREÇÃO PASSO 2) ---
-    //
-    // PORQUÊ: O [JsonConstructor] diz ao Serializador
-    // para usar este construtor ao "re-hidratar" (ler) o objeto
-    // do arquivo JSON.
+    //O [JsonConstructor] diz ao Serializador
+    //para usar este construtor ao ler o objeto
     [JsonConstructor]
     public Produto(Guid id, string sku, string nome, decimal precoVenda, CategoriaProduto categoria, DateOnly? dataValidade, int estoqueAtual)
     {
-        // PORQUÊ: Este construtor "confia" nos dados do banco.
-        // Ele simplesmente atribui os valores lidos.
+        //Este construtor "confia" nos dados do banco.
+        //Ele simplesmente atribui os valores lidos.
         Id = id;
         Sku = sku;
         Nome = nome;
@@ -59,13 +46,11 @@ public class Produto
         EstoqueAtual = estoqueAtual;
     }
 
-    /// <summary>
-    /// O "PORTÃO DA FRENTE": Método de fábrica para criar um NOVO Produto.
-    /// Garante que todas as regras de negócio sejam validadas.
-    /// </summary>
+    ///Método que cria um novo porduto
+    ///Garante que todas as regras de negócio sejam validadas.
     public static Produto Create(string sku, string nome, decimal precoVenda, int estoqueAtual, CategoriaProduto categoria, DateOnly? dataValidade)
     {
-        // --- O Portão de Validação (O Guardião) ---
+        // validador
         if (string.IsNullOrWhiteSpace(sku))
             throw new ValidacaoProdutoException("SKU é obrigatório.");
 
@@ -81,9 +66,8 @@ public class Produto
         if (dataValidade.HasValue && dataValidade.Value < DateOnly.FromDateTime(DateTime.Now))
             throw new ValidacaoProdutoException("Data de validade não pode estar no passado.");
 
-        // --- Fim do Portão ---
 
-        // PORQUÊ: Usa o construtor privado e gera um NOVO Guid.
+        //Usa o construtor privado e gera um NOVO Guid
         return new Produto
         {
             Id = Guid.NewGuid(), // Gera um NOVO Id
@@ -96,9 +80,7 @@ public class Produto
         };
     }
 
-    // --- Comandos (CQS - Artefato 5) ---
     // Métodos que alteram o estado de forma controlada.
-
     public void DarBaixaEstoque(int quantidade)
     {
         if (quantidade <= 0)
@@ -118,15 +100,13 @@ public class Produto
         EstoqueAtual += quantidade;
     }
 
-    // --- Métodos de Infraestrutura ---
-
     public override string ToString()
     {
         // Formata o preço para a cultura pt-BR (R$)
         return $"Produto [Id={Id}, Sku={Sku}, Nome={Nome}, Preco={PrecoVenda.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}, Estoque={EstoqueAtual}]";
     }
 
-    // PORQUÊ: Entidades são comparadas por ID.
+    //Entidades são comparadas por ID.
     public override bool Equals(object? obj)
     {
         if (obj is not Produto outroProduto) return false;

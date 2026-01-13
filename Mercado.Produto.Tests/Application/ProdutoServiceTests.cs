@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// PORQUÊ: O namespace espelha a localização.
+//O namespace espelha a localização.
 namespace Mercado.Produto.Tests.Application;
 
-// PORQUÊ: Importamos o Moq para 'dublar' o repositório.
-// Importamos o Alias para resolver a ambiguidade do nome 'Produto'.
+// Usei o Moq para 'dublar' o repositório.
+// Importei o Alias para resolver a ambiguidade do nome 'Produto'.
 using Mercado.Produto.Application;
 using Mercado.Produto.Domain;
 using Mercado.Produto.Domain.Exceptions;
@@ -19,14 +19,13 @@ using ProdutoEntidade = Mercado.Produto.Domain.Produto; // O Alias
 
 public class ProdutoServiceTests
 {
-    // PORQUÊ: Estes são os 'atores' do nosso teste.
     private readonly Mock<IProdutoRepository> _mockRepository;
-    private readonly ProdutoService _service; // O SUT (System Under Test / Sistema Sob Teste)
+    private readonly ProdutoService _service; // O SUT 
 
     public ProdutoServiceTests()
     {
         // Arrange (Setup)
-        // Criamos o 'dublê' (Mock)
+        // CRIAÇÃO DO MOCK DO REPOSITÓRIO
         _mockRepository = new Mock<IProdutoRepository>();
 
         // Criamos o Serviço, injetando o 'dublê' (Mock) nele.

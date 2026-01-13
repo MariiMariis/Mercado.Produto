@@ -1,22 +1,12 @@
-﻿using Mercado.Produto.Domain;
-using System.Collections.Concurrent;
-
-
-namespace Mercado.Produto.Infrastructure;
+﻿namespace Mercado.Produto.Infrastructure;
 
 using Mercado.Produto.Domain; // Certifique-se que o using do Domain está aqui
 using System.Collections.Concurrent;
 
-/// <summary>
 /// Implementação (Adaptador) do contrato do Repositório em memória.
-/// </summary>
 public class InMemoryProdutoRepository : IProdutoRepository
 {
-    //
-    // CORREÇÃO: Os campos devem estar DENTRO da classe.
-    // PORQUÊ: Eles representam o estado privado e interno
-    // desta implementação específica do repositório.
-    //
+
     private static readonly ConcurrentDictionary<Guid, Produto> _db = new();
     private static readonly ConcurrentDictionary<string, Guid> _skuIndex = new();
 

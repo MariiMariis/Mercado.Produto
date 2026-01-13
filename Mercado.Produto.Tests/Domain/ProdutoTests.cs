@@ -1,19 +1,11 @@
-using Mercado.Produto.Domain;
-using Mercado.Produto.Domain.Exceptions;
-using System.Drawing;
-using Xunit; // Pacote xUnit
-using FluentAssertions; // Pacote FluentAssertions
-
-// PORQUÊ: O namespace espelha a localização do arquivo.
 namespace Mercado.Produto.Tests.Domain;
 
-// PORQUÊ: Importamos as ferramentas de teste (Xunit, FluentAssertions)
+// Importamos as ferramentas de teste (Xunit, FluentAssertions)
 // e as classes que estamos testando (Domínio e Exceções do Domínio).
 using Mercado.Produto.Domain;
 using Mercado.Produto.Domain.Exceptions;
 using Xunit;
 using FluentAssertions;
-using System.Security.Cryptography;
 
 // PORQUÊ: O nome da classe de teste termina com 'Tests'
 public class ProdutoTests
@@ -111,7 +103,6 @@ public class ProdutoTests
         // Assert
         act.Should().Throw<EstoqueInsuficienteException>();
 
-        // PORQUÊ: Fundamental! Verificamos que o estado não foi corrompido.
         // O estoque DEVE permanecer 5.
         produto.EstoqueAtual.Should().Be(5);
     }

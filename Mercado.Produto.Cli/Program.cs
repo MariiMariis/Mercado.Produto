@@ -3,19 +3,16 @@ using Mercado.Produto.Domain;
 using Mercado.Produto.Domain.Exceptions;
 using Mercado.Produto.Infrastructure;
 using System.Globalization;
-// PORQUÊ: O Alias continua a ser fundamental para a clareza.
 using ProdutoEntidade = Mercado.Produto.Domain.Produto;
 
-// --- 1. A Raiz de Composição (Injeção de Dependência) ---
-// Isto não muda. Continuamos a "montar" a nossa máquina da mesma forma.
+//1.Injeção de dependencia
 IProdutoRepository repository = new ArquivoProdutoRepository();
 ProdutoService service = new ProdutoService(repository);
 
 Console.WriteLine("=== Sistema de Cadastro de Produtos do Mercado (.NET) ===");
 Console.WriteLine("Bem-vindo, Engenheiro.");
 
-// --- 2. O Loop de Aplicação (REPL) ---
-// Em vez de um script, iniciamos um loop infinito que espera por comandos.
+//2. O Loop de Aplicação que aguarda comandos
 await MainLoopAsync();
 
 async Task MainLoopAsync()
@@ -47,10 +44,7 @@ async Task MainLoopAsync()
     }
 }
 
-// --- 3. Os Métodos da Interface (Helpers) ---
-// PORQUÊ: Em vez de colocar todo o código no 'switch',
-// extraímos métodos (Artefato 3: Clean Code)
-
+//3. Os Métodos da Interface (Helpers) 
 void ExibirMenu()
 {
     Console.WriteLine("\n--- MENU DE OPERAÇÕES ---");
@@ -74,7 +68,7 @@ async Task ListarTodosProdutosAsync()
 
     foreach (var p in produtos)
     {
-        // Usamos o ToString() formatado da nossa entidade.
+        
         Console.WriteLine(p.ToString());
     }
 }
@@ -84,14 +78,12 @@ async Task CadastrarNovoProdutoAsync()
     Console.WriteLine("\n[OPERAÇÃO: Cadastrar Novo Produto]");
     try
     {
-        // PORQUÊ: Usamos helpers robustos para ler dados.
+        
         string sku = LerStringObrigatoria("SKU (Código de Barras): ");
         string nome = LerStringObrigatoria("Nome (3-100 caracteres): ");
         decimal preco = LerDecimal("Preço de Venda (ex: 29.99): ");
         int estoque = LerInt("Estoque Inicial (ex: 50): ");
         CategoriaProduto categoria = LerCategoria("Categoria: ");
-
-        // TODO: Ler Data de Validade (opcional) - deixado como exercício.
 
         // 2. Avaliar (Chamar o Serviço)
         var id = await service.CriarNovoProdutoAsync(sku, nome, preco, estoque, categoria, null);
@@ -101,9 +93,7 @@ async Task CadastrarNovoProdutoAsync()
     }
     catch (Exception ex)
     {
-        // PORQUÊ: Robustez (Artefato 4)!
-        // Capturamos exceções de validação ou outras e mostramos
-        // uma mensagem amigável, sem "crashar" o loop.
+        // Captura exceptions e retorna uma mensagem sem "crashar a aplicação"
         ImprimirErro(ex.Message);
     }
 }
@@ -131,8 +121,7 @@ async Task DarBaixaEstoqueAsync()
     }
 }
 
-// --- 4. Métodos de Utilidade (Robustez) ---
-// PORQUÊ: Estes métodos garantem que não vamos "crashar"
+//Estes métodos garantem que não vamos "crashar"
 // se o usuário digitar dados inválidos.
 
 string LerStringObrigatoria(string prompt)

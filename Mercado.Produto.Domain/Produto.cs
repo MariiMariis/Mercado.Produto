@@ -4,15 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace Mercado.Produto.Domain;
 
-/// Representa a entidade Produto, guardando as regras de negócio
+
 public class Produto
 {
-    //Constantes para evitar "Valores Mágicos"
+   
     private const int TAMANHO_MINIMO_NOME = 3;
     private const int TAMANHO_MAXIMO_NOME = 100;
 
-    //Propriedades com 'private set' (Imutabilidade Parcial).
-    //Só podem ser alteradas por métodos dentro desta classe.
     public Guid Id { get; private set; }
     public string Sku { get; private set; }
     public string Nome { get; private set; }
@@ -21,22 +19,17 @@ public class Produto
     public DateOnly? DataValidade { get; private set; }
     public int EstoqueAtual { get; private set; }
 
-    //Um construtor privado para forçar o uso
-    //do método de fábrica 'Create' e garantir a inicialização correta
+
     private Produto()
     {
-        // Garante que strings nunca sejam nulas
+
         Sku = string.Empty;
         Nome = string.Empty;
     }
 
-    //O [JsonConstructor] diz ao Serializador
-    //para usar este construtor ao ler o objeto
     [JsonConstructor]
     public Produto(Guid id, string sku, string nome, decimal precoVenda, CategoriaProduto categoria, DateOnly? dataValidade, int estoqueAtual)
     {
-        //Este construtor "confia" nos dados do banco.
-        //Ele simplesmente atribui os valores lidos.
         Id = id;
         Sku = sku;
         Nome = nome;
@@ -46,11 +39,8 @@ public class Produto
         EstoqueAtual = estoqueAtual;
     }
 
-    ///Método que cria um novo porduto
-    ///Garante que todas as regras de negócio sejam validadas.
     public static Produto Create(string sku, string nome, decimal precoVenda, int estoqueAtual, CategoriaProduto categoria, DateOnly? dataValidade)
     {
-        // validador
         if (string.IsNullOrWhiteSpace(sku))
             throw new ValidacaoProdutoException("SKU é obrigatório.");
 
@@ -65,12 +55,10 @@ public class Produto
 
         if (dataValidade.HasValue && dataValidade.Value < DateOnly.FromDateTime(DateTime.Now))
             throw new ValidacaoProdutoException("Data de validade não pode estar no passado.");
-
-
-        //Usa o construtor privado e gera um NOVO Guid
+     
         return new Produto
         {
-            Id = Guid.NewGuid(), // Gera um NOVO Id
+            Id = Guid.NewGuid(),
             Sku = sku,
             Nome = nome,
             PrecoVenda = precoVenda,
@@ -80,7 +68,6 @@ public class Produto
         };
     }
 
-    // Métodos que alteram o estado de forma controlada.
     public void DarBaixaEstoque(int quantidade)
     {
         if (quantidade <= 0)
@@ -102,11 +89,10 @@ public class Produto
 
     public override string ToString()
     {
-        // Formata o preço para a cultura pt-BR (R$)
         return $"Produto [Id={Id}, Sku={Sku}, Nome={Nome}, Preco={PrecoVenda.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}, Estoque={EstoqueAtual}]";
     }
 
-    //Entidades são comparadas por ID.
+
     public override bool Equals(object? obj)
     {
         if (obj is not Produto outroProduto) return false;

@@ -1,0 +1,15 @@
+@page "{id:guid}"
+@using ProdutoEntidade = Mercado.Produto.Domain.Produto
+@model DeleteModel
+@{
+    ViewData["Title"] = "Excluir Produto";
+}
+<div class="container mt-4">
+    <h2>Excluir Produto</h2>
+    <div class="alert alert-warning">Tem certeza que deseja excluir o produto <strong>@Model.Produto?.Nome</strong>?</div>
+    <form method="post">
+        <input type="hidden" asp-for="Produto.Id" />
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>

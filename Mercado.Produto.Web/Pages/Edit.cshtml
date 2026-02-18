@@ -1,0 +1,46 @@
+@page "{id:guid}"
+@model EditModel
+@{
+    ViewData["Title"] = "Editar Produto";
+}
+<div class="container mt-4">
+    <h2>Editar Produto</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Produto.Id" />
+        <div class="mb-3">
+            <label asp-for="Produto.Sku" class="form-label"></label>
+            <input asp-for="Produto.Sku" class="form-control" />
+            <span asp-validation-for="Produto.Sku" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produto.Nome" class="form-label"></label>
+            <input asp-for="Produto.Nome" class="form-control" />
+            <span asp-validation-for="Produto.Nome" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produto.PrecoVenda" class="form-label"></label>
+            <input asp-for="Produto.PrecoVenda" class="form-control" type="number" step="0.01" />
+            <span asp-validation-for="Produto.PrecoVenda" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produto.Categoria" class="form-label"></label>
+            <select asp-for="Produto.Categoria" asp-items="Model.Categorias" class="form-select"></select>
+            <span asp-validation-for="Produto.Categoria" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produto.DataValidade" class="form-label"></label>
+            <input asp-for="Produto.DataValidade" class="form-control" type="date" />
+            <span asp-validation-for="Produto.DataValidade" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produto.EstoqueAtual" class="form-label"></label>
+            <input asp-for="Produto.EstoqueAtual" class="form-control" type="number" />
+            <span asp-validation-for="Produto.EstoqueAtual" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

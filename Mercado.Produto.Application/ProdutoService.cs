@@ -40,13 +40,39 @@ public class ProdutoService
 
     public async Task<IEnumerable<ProdutoEntidade>> ListarTodosProdutosAsync()
     {
-       
+
         return await _produtoRepository.ListarTodosAsync();
     }
 
     public async Task<ProdutoEntidade?> BuscarPorSkuAsync(string sku)
     {
-
         return await _produtoRepository.BuscarPorSkuAsync(sku);
+    }
+
+    public async Task<ProdutoEntidade?> BuscarPorIdAsync(Guid id)
+    {
+        return await _produtoRepository.BuscarPorIdAsync(id);
+    }
+
+    public async Task AtualizarProdutoAsync(Guid id, string sku, string nome, decimal preco, int estoque, CategoriaProduto categoria, DateOnly? validade)
+    {
+        var produto = await _produtoRepository.BuscarPorIdAsync(id)
+            ?? throw new ProdutoNaoEncontradoException($"Produto com ID '{id}' não encontrado.");
+
+        if (produto.Sku != sku && await _produtoRepository.BuscarPorSkuAsync(sku) is not null)
+        {
+            throw new ValidacaoProdutoException($"SKU '{sku}' já cadastrado.");
+        }
+
+        var produtoAtualizado = new ProdutoEntidade(id, sku, nome, preco, categoria, validade, estoque);
+        await _produtoRepository.SalvarAsync(produtoAtualizado);
+    }
+
+    public async Task ExcluirProdutoAsync(Guid id)
+    {
+        var produto = await _produtoRepository.BuscarPorIdAsync(id)
+            ?? throw new ProdutoNaoEncontradoException($"Produto com ID '{id}' não encontrado.");
+
+        await _produtoRepository.DeletarAsync(id);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Mercado.Produto.Application;
 using Mercado.Produto.Domain;
-using Mercado.Produto.Domain.Exceptions;
 using Mercado.Produto.Infrastructure;
 using System.Globalization;
-using ProdutoEntidade = Mercado.Produto.Domain.Produto;
 
 IProdutoRepository repository = new ArquivoProdutoRepository();
 ProdutoService service = new ProdutoService(repository);
@@ -64,7 +62,7 @@ async Task ListarTodosProdutosAsync()
 
     foreach (var p in produtos)
     {
-        
+
         Console.WriteLine(p.ToString());
     }
 }

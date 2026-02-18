@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mercado.Produto.Infrastructure\Mercado.Produto.Infrastructure.csproj" />
+    <ProjectReference Include="..\Mercado.Produto.Domain\Mercado.Produto.Domain.csproj" />
+    <ProjectReference Include="..\Mercado.Produto.Application\Mercado.Produto.Application.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

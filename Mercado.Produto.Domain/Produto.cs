@@ -7,7 +7,7 @@ namespace Mercado.Produto.Domain;
 
 public class Produto
 {
-   
+
     private const int TAMANHO_MINIMO_NOME = 3;
     private const int TAMANHO_MAXIMO_NOME = 100;
 
@@ -55,7 +55,7 @@ public class Produto
 
         if (dataValidade.HasValue && dataValidade.Value < DateOnly.FromDateTime(DateTime.Now))
             throw new ValidacaoProdutoException("Data de validade não pode estar no passado.");
-     
+
         return new Produto
         {
             Id = Guid.NewGuid(),
